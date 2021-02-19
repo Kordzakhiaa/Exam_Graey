@@ -46,24 +46,24 @@ def create_order(request):
     return render(request, 'ecommerce/order_form.html', {'form': form})
 
 
-def washer_detail(request, pk: int):
-    orders = CarWasher.objects.get(pk=pk)
-    orders = washer_by_id.orders.all()
-    today = datetime.today()
-
-    context = {
-        'washer_by_id': washer_by_id,
-        'today_earned': orders.filter(created_date__range=[date(1), today]).aggregate(salary=Sum('order_price')).get(
-            'salary'),
-        'weekly_earned': orders.filter(created_date__range=[date(7), today]).aggregate(salary=Sum('order_price')).get(
-            'salary'),
-        'monthly_earned': orders.filter(created_date__range=[date(30), today]).aggregate(salary=Sum('order_price')).get(
-            'salary'),
-        'yearly_earned': orders.filter(created_date__range=[date(365), today]).aggregate(salary=Sum('order_price')).get(
-            'salary'),
-    }
-    return render(request, 'washer_details.html', context)
-
+#
+# def washer_detail(request, pk: int):
+#     orders = CarWasher.objects.get(pk=pk)
+#     orders = washer_by_id.orders.all()
+#     today = datetime.today()
+#
+#     context = {
+#         'washer_by_id': washer_by_id,
+#         'today_earned': orders.filter(created_date__range=[date(1), today]).aggregate(salary=Sum('order_price')).get(
+#             'salary'),
+#         'weekly_earned': orders.filter(created_date__range=[date(7), today]).aggregate(salary=Sum('order_price')).get(
+#             'salary'),
+#         'monthly_earned': orders.filter(created_date__range=[date(30), today]).aggregate(salary=Sum('order_price')).get(
+#             'salary'),
+#         'yearly_earned': orders.filter(created_date__range=[date(365), today]).aggregate(salary=Sum('order_price')).get(
+#             'salary'),
+#     }
+#     return render(request, 'washer_details.html', context)
 
 
 def home(request):
