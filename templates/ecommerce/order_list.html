@@ -31,7 +31,7 @@
             </li>
 
               {% for i in orders.paginator.page_range %}
-                  {% if order.number == i %}
+                  {% if orders.number == i %}
                       <li class="page-item active">
                         <a class="page-link" href="?page={{ i }}">{{ i }}<span class="sr-only">(current)</span></a>
                       </li>

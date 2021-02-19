@@ -9,7 +9,7 @@ from .models import *
 
 
 def order_list(request):
-    orders = Order.objects.all()
+    orders = Order.objects.get()
     q = request.GET.get('q')
     if q:
         orders = Order.objects.filter(Q(ticket__name__icontains=q) | Q(ticket__name__icontains=q))
@@ -31,7 +31,10 @@ def order_list(request):
     else:
         prev_url = ''
 
-    context = {'orders': orders}
+    context = {'orders': page,
+               'next_page_url': next_url,
+               'prev_page_url': prev_url
+               }
     return render(request, 'ecommerce/order_list.html', context)
 
 
@@ -47,7 +50,7 @@ def create_order(request):
 
 
 #
-# def washer_detail(request, pk: int):
+# def order_details(request, pk: int):
 #     orders = CarWasher.objects.get(pk=pk)
 #     orders = washer_by_id.orders.all()
 #     today = datetime.today()
