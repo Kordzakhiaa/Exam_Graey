@@ -1,16 +1,22 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+import random
 
 
 class Ticket(models.Model):
     name = models.CharField(max_length=200, unique=True)
     start_date = models.DateTimeField(verbose_name=_("Start Date"))
     end_date = models.DateTimeField(verbose_name=_("End Date"))
-    code = models.CharField(max_length=50, unique=True)
+    code = models.CharField(max_length=50, unique=True, blank=True, null=True)
     price = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.code = str(random.random())[2:-1]
+        super(Ticket, self).save(*args, *kwargs)
 
 
 class Order(models.Model):

@@ -10,4 +10,8 @@ class OrderForm(ModelForm):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = [
+            'ticket',
+            'order_start_date',
+            'order_end_date'
+        ]
