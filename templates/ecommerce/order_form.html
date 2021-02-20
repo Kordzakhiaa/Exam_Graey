@@ -1,8 +1,40 @@
 {% extends 'base.html' %}
 {% block body %}
-    <form action="" method="POST">
-    {% csrf_token %}
-        {{ form }}
-        <input type="submit" name="submit" id="submit" class="form-submit"/>
-    </form>
+    <style>
+        h1{
+            font-size: 50px;
+            font-weight: bold;
+            font-family:"Times New Roman", Times, serif;
+            width: -moz-fit-content;
+            width: fit-content;
+            display: inline;
+            background-color: white;
+            padding:3px 3px 3px 6px;
+        }
+    </style>
+    <br>
+    <br>
+    <h1>Order Creating</h1>
+    <form action="" method="POST" >
+        {% csrf_token %}
+        <br>
+        <div class="card card-body">
+        <table>
+            <tr>
+                <th>Ticket</th>
+                <th>Order Start Date</th>
+                <th>Order End Date</th>
+            </tr>
+            <tr>
+                <th>{{ form.ticket }}</th>
+                <th>{{ form.order_start_date }}</th>
+                <th>{{ form.order_end_date }}</th>
+            </tr>
+        </table>
+            <br>
+        <input class="btn btn-success" type="submit" name="submit">
+        </div>
+
+
 {% endblock %}
+</form>

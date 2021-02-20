@@ -11,7 +11,7 @@ from .models import *
 
 @login_required(login_url='user:login_page')
 def order_list(request):
-    orders = Order.objects.all()
+    orders = Order.objects.filter(user_id=request.user.id)
     q = request.GET.get('q')
     if q:
         orders = Order.objects.filter(Q(ticket__name__icontains=q) | Q(ticket__name__icontains=q))
@@ -46,7 +46,9 @@ def create_order(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            form.save()
+            order_form = form.save(commit=False)
+            order_form.user_id = request.user.id
+            order_form.save()
             return redirect('ecommerce:order_list')
 
     return render(request, 'ecommerce/order_form.html', {'form': form})
