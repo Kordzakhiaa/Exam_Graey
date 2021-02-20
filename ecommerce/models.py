@@ -26,7 +26,7 @@ class Order(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_("Price"), default=None)
 
     def __str__(self):
-        return f"{self.user}'s order"
+        return f"{self.user.email}'s order"
 
     def save(self, *args, **kwargs):
         if not self.pk:

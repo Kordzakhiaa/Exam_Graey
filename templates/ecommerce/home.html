@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-    <style>
+<style>
         h1{
             font-size: 60px;
             font-weight: bold;
@@ -17,32 +17,30 @@
     <br>
     <br>
     <div class="container">
-<div class="col-md-12">
-		<h1>Statistics</h1>
-    <br>
-    <br>
-		<div class="card card-body">
-            <table class="table">
-				<tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Washed Cars</th>
-                    <th>Today Earned</th>
-                    <th>Weekly Earned</th>
-                    <th>Monthly Earned</th>
-                    <th>Yearly Earned</th>
-				</tr>
-                <tr>
-                    <td>{{ washer_by_id.id }}</td>
-					<td>{{ washer_by_id.name }}</td>
-                    <td>{{ washer_by_id.orders.count }}</td>
-                    <td>{{ today_earned }}</td>
-                    <td>{{ weekly_earned }}</td>
-                    <td>{{ monthly_earned }}</td>
-                    <td>{{ yearly_earned }}</td>
-                </tr>
-			</table>
-		</div>
-	</div>
-
+        <div class="col-md-12">
+                <h1>Statistics</h1>
+            <br>
+            <br>
+                <div class="card card-body">
+                    <table class="table">
+                        <tr>
+                            <th>Last Week Amount paid</th>
+                            <th>Number of tickets purchased a week ago</th>
+                            <th>Last Month Amount paid</th>
+                            <th>Number of tickets purchased a month ago</th>
+                            <th>Last Year Amount paid</th>
+                            <th>Number of tickets purchased a year ago</th>
+                        </tr>
+                        <tr>
+                            <td>{{ last_week_spend_money }} $</td>
+                            <td>{{ quantity_of_tickets_last_week }} pieces</td>
+                            <td>{{ last_month_spend_money }} $</td>
+                            <td>{{ quantity_of_tickets_last_month }} pieces</td>
+                            <td>{{ last_year_spend_money }} $</td>
+                            <td>{{ quantity_of_tickets_last_year }} pieces</td>
+                        </tr>
+                    </table>
+                </div>
+	    </div>
+    </div>
 {% endblock body %}

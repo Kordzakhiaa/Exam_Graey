@@ -2,9 +2,10 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render, redirect
 
+from .get_date import date
 from .forms import OrderForm
 from .models import *
 
@@ -41,6 +42,38 @@ def order_list(request):
 
 
 @login_required(login_url='user:login_page')
+def home(request):
+    concrete_user_order = Order.objects.filter(user_id=request.user.id)
+    today = datetime.today()
+
+    context = {
+        'concrete_user_order': concrete_user_order,
+        'last_week_spend_money': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
+            spend_money=Sum('price')).get(
+            'spend_money'),
+        'quantity_of_tickets_last_week': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
+            quantity_of_tickets=Sum('ticket')).get(
+            'quantity_of_tickets'),
+
+        'last_month_spend_money': concrete_user_order.filter(created_date__range=[date(30), today]).aggregate(
+            spend_money=Sum('price')).get(
+            'spend_money'),
+        'quantity_of_tickets_last_month': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
+            quantity_of_tickets=Sum('ticket')).get(
+            'quantity_of_tickets'),
+
+        'last_year_spend_money': concrete_user_order.filter(created_date__range=[date(365), today]).aggregate(
+            spend_money=Sum('price')).get(
+            'spend_money'),
+        'quantity_of_tickets_last_year': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
+            quantity_of_tickets=Sum('ticket')).get(
+            'quantity_of_tickets'),
+    }
+
+    return render(request, 'ecommerce/home.html', context)
+
+
+@login_required(login_url='user:login_page')
 def create_order(request):
     form = OrderForm()
     if request.method == "POST":
@@ -54,25 +87,6 @@ def create_order(request):
     return render(request, 'ecommerce/order_form.html', {'form': form})
 
 
-# from user.forms import CreateUserForm
-# def order_details(request, pk: int):
-#     orders = CarWasher.objects.get(pk=pk)
-#     orders = washer_by_id.orders.all()
-#     today = datetime.today()
-#
-#     context = {
-#         'washer_by_id': washer_by_id,
-#         'today_earned': orders.filter(created_date__range=[date(1), today]).aggregate(salary=Sum('order_price')).get(
-#             'salary'),
-#         'weekly_earned': orders.filter(created_date__range=[date(7), today]).aggregate(salary=Sum('order_price')).get(
-#             'salary'),
-#         'monthly_earned': orders.filter(created_date__range=[date(30), today]).aggregate(salary=Sum('order_price')).get(
-#             'salary'),
-#         'yearly_earned': orders.filter(created_date__range=[date(365), today]).aggregate(salary=Sum('order_price')).get(
-#             'salary'),
-#     }
-#     return render(request, 'washer_details.html', context)
-
-@login_required(login_url='user:login_page')
-def home(request):
-    return render(request, 'ecommerce/home.html')
+# @login_required(login_url='user:login_page')
+# def home(request):
+#     return render(request, 'ecommerce/home.html')
