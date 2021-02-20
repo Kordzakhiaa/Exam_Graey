@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -8,8 +9,9 @@ from .forms import OrderForm
 from .models import *
 
 
+@login_required(login_url='user:login_page')
 def order_list(request):
-    orders = Order.objects.get()
+    orders = Order.objects.all()
     q = request.GET.get('q')
     if q:
         orders = Order.objects.filter(Q(ticket__name__icontains=q) | Q(ticket__name__icontains=q))
@@ -38,6 +40,7 @@ def order_list(request):
     return render(request, 'ecommerce/order_list.html', context)
 
 
+@login_required(login_url='user:login_page')
 def create_order(request):
     form = OrderForm()
     if request.method == "POST":
@@ -49,7 +52,7 @@ def create_order(request):
     return render(request, 'ecommerce/order_form.html', {'form': form})
 
 
-#
+# from user.forms import CreateUserForm
 # def order_details(request, pk: int):
 #     orders = CarWasher.objects.get(pk=pk)
 #     orders = washer_by_id.orders.all()
@@ -68,6 +71,6 @@ def create_order(request):
 #     }
 #     return render(request, 'washer_details.html', context)
 
-
+@login_required(login_url='user:login_page')
 def home(request):
     return render(request, 'ecommerce/home.html')

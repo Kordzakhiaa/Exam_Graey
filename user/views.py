@@ -29,3 +29,8 @@ def login_page(request):
             messages.info(request, 'Username or Password is incorrect')
 
     return render(request, 'user/login.html')
+
+
+def logout_page(request):
+    logout(request)
+    return render(request, 'user/login.html')
