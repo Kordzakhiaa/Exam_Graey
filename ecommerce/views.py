@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
 from django.shortcuts import render, redirect
 
 from .get_date import date
@@ -52,21 +52,21 @@ def home(request):
             spend_money=Sum('price')).get(
             'spend_money'),
         'quantity_of_tickets_last_week': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
-            quantity_of_tickets=Sum('ticket')).get(
+            quantity_of_tickets=Count('ticket')).get(
             'quantity_of_tickets'),
 
         'last_month_spend_money': concrete_user_order.filter(created_date__range=[date(30), today]).aggregate(
             spend_money=Sum('price')).get(
             'spend_money'),
         'quantity_of_tickets_last_month': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
-            quantity_of_tickets=Sum('ticket')).get(
+            quantity_of_tickets=Count('ticket')).get(
             'quantity_of_tickets'),
 
         'last_year_spend_money': concrete_user_order.filter(created_date__range=[date(365), today]).aggregate(
             spend_money=Sum('price')).get(
             'spend_money'),
         'quantity_of_tickets_last_year': concrete_user_order.filter(created_date__range=[date(7), today]).aggregate(
-            quantity_of_tickets=Sum('ticket')).get(
+            quantity_of_tickets=Count('ticket')).get(
             'quantity_of_tickets'),
     }
 
@@ -85,8 +85,3 @@ def create_order(request):
             return redirect('ecommerce:order_list')
 
     return render(request, 'ecommerce/order_form.html', {'form': form})
-
-
-# @login_required(login_url='user:login_page')
-# def home(request):
-#     return render(request, 'ecommerce/home.html')

@@ -4,11 +4,16 @@ import random
 
 
 class Ticket(models.Model):
+    # STATUS = [
+    #     ('available', 'available'),
+    #     ('unavailable', 'unavailable'),
+    # ]
     name = models.CharField(max_length=200, unique=True)
     start_date = models.DateTimeField(verbose_name=_("Start Date"))
     end_date = models.DateTimeField(verbose_name=_("End Date"))
     code = models.CharField(max_length=50, unique=True, blank=True, null=True)
     price = models.DecimalField(max_digits=4, decimal_places=2)
+    # status = models.CharField(max_length=50, choices=STATUS, default='available')
 
     def __str__(self):
         return self.name
