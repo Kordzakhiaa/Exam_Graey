@@ -79,9 +79,15 @@ def create_order(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            order_form = form.save(commit=False)
+            order_form: Order = form.save(commit=False)
             order_form.user_id = request.user.id
             order_form.save()
+            ticket = Ticket.objects.get(id=order_form.ticket.id)
+            print('Ticket : ', ticket)
+            ticket.status = ticket.UNAVAILABLE
+            print('Status : ', ticket.status)
+            # ticket = Ticket.objects.filter(status=ticket.AVAILABLE)
+            ticket.save()
             return redirect('ecommerce:order_list')
 
     return render(request, 'ecommerce/order_form.html', {'form': form})
