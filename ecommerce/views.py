@@ -15,7 +15,7 @@ def order_list(request):
     orders = Order.objects.filter(user_id=request.user.id)
     q = request.GET.get('q')
     if q:
-        orders = Order.objects.filter(Q(ticket__name__icontains=q) | Q(ticket__name__icontains=q))
+        orders = Order.objects.filter(Q(ticket__name__icontains=q) & Q(user_id=request.user.id))
     p = Paginator(orders, 3)
 
     page_num = request.GET.get('page', 1)
@@ -83,10 +83,7 @@ def create_order(request):
             order_form.user_id = request.user.id
             order_form.save()
             ticket = Ticket.objects.get(id=order_form.ticket.id)
-            print('Ticket : ', ticket)
             ticket.status = ticket.UNAVAILABLE
-            print('Status : ', ticket.status)
-            # ticket = Ticket.objects.filter(status=ticket.AVAILABLE)
             ticket.save()
             return redirect('ecommerce:order_list')
 

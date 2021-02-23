@@ -11,6 +11,7 @@ class Ticket(models.Model):
         (AVAILABLE, _('available')),
         (UNAVAILABLE, _('unavailable')),
     ]
+
     name = models.CharField(max_length=200, unique=True)
     start_date = models.DateTimeField(verbose_name=_("Start Date"))
     end_date = models.DateTimeField(verbose_name=_("End Date"))
